@@ -1,6 +1,6 @@
 # 🛠️ Awesome Function Calling
 
-A complete, production-oriented reference for **Function Calling**, **Tool Calling**, and **Structured Outputs** across the major LLM providers — OpenAI, Anthropic (Claude), and Google (Gemini).
+A complete, production-oriented reference for **Function Calling**, **Tool Calling**, and **Structured Outputs** across the major LLM providers - OpenAI, Anthropic (Claude), and Google (Gemini).
 
 This repository contains working examples, JSON Schemas, architecture notes, and best practices for 11 real-world tools, plus deep-dive documentation on the concepts that make tool-using agents reliable in production.
 
@@ -10,26 +10,26 @@ This repository contains working examples, JSON Schemas, architecture notes, and
 
 ```
 awesome-function-calling/
-├── README.md                  ← you are here
-├── openai/                    ← OpenAI function calling guide + examples
-├── claude/                    ← Anthropic Claude tool use guide + examples
-├── gemini/                    ← Google Gemini function calling guide + examples
-├── json-output/               ← JSON mode / JSON-only output patterns
-├── structured-output/         ← Schema-constrained structured outputs
-├── tool-calling/              ← General tool-calling architecture & lifecycle
-├── weather/                   ← Weather Tool (full example)
-├── calendar/                  ← Calendar Tool (full example)
-├── email/                     ← Email Tool (full example)
-├── sql/                       ← SQL Tool (full example)
-├── excel/                     ← Excel Tool (full example)
-├── github/                    ← GitHub Tool (full example)
-├── filesystem/                ← Filesystem Tool (full example)
-├── web-search/                ← Search Tool (full example)
-├── pdf/                       ← PDF Tool (full example)
-├── math/                      ← Math Tool (full example)
-├── translation/               ← Translation Tool (full example)
-├── examples/                  ← Multi-tool / orchestration examples
-└── templates/                 ← Reusable schema & handler templates
+├── README.md                  <- you are here
+├── openai/                    <- OpenAI function calling guide + examples
+├── claude/                    <- Anthropic Claude tool use guide + examples
+├── gemini/                    <- Google Gemini function calling guide + examples
+├── json-output/               <- JSON mode / JSON-only output patterns
+├── structured-output/         <- Schema-constrained structured outputs
+├── tool-calling/              <- General tool-calling architecture & lifecycle
+├── weather/                   <- Weather Tool (full example)
+├── calendar/                  <- Calendar Tool (full example)
+├── email/                     <- Email Tool (full example)
+├── sql/                       <- SQL Tool (full example)
+├── excel/                     <- Excel Tool (full example)
+├── github/                    <- GitHub Tool (full example)
+├── filesystem/                <- Filesystem Tool (full example)
+├── web-search/                <- Search Tool (full example)
+├── pdf/                       <- PDF Tool (full example)
+├── math/                      <- Math Tool (full example)
+├── translation/               <- Translation Tool (full example)
+├── examples/                  <- Multi-tool / orchestration examples
+└── templates/                 <- Reusable schema & handler templates
 ```
 
 Every tool folder follows the same 10-section format: **Overview, Architecture, JSON Schema, Tool Definition, Input, Output, Example Request, Example Response, Error Handling, Best Practices.**
@@ -57,7 +57,7 @@ Every tool folder follows the same 10-section format: **Overview, Architecture, 
 
 **Function calling** is a capability that lets a language model produce a structured, machine-readable request to invoke a function defined by the developer, instead of (or in addition to) free-form text.
 
-The model doesn't execute the function itself — it only decides:
+The model doesn't execute the function itself - it only decides:
 - **which** function to call,
 - **when** to call it, and
 - **what arguments** to pass, validated against a schema you provide.
@@ -85,7 +85,7 @@ Result is returned to the model as a "tool result" message
 Model incorporates the result and responds to the user
 ```
 
-Function calling turns an LLM from a text generator into an **orchestrator** that can query databases, call APIs, read files, send emails, and take real-world actions — all while you retain full control over what code actually executes.
+Function calling turns an LLM from a text generator into an **orchestrator** that can query databases, call APIs, read files, send emails, and take real-world actions - all while you retain full control over what code actually executes.
 
 ---
 
@@ -101,21 +101,21 @@ A **tool** is typically defined by:
 | `description` | Natural-language explanation the model uses to decide *when* to call it |
 | `input_schema` / `parameters` | A JSON Schema describing valid arguments |
 
-Good tool descriptions are the single highest-leverage lever for reliable tool selection — treat them like API documentation written for a very literal reader.
+Good tool descriptions are the single highest-leverage lever for reliable tool selection - treat them like API documentation written for a very literal reader.
 
 ### Single-turn vs multi-turn tool use
 
-- **Single-turn**: one tool call → one result → final answer.
+- **Single-turn**: one tool call -> one result -> final answer.
 - **Multi-turn / agentic**: the model chains multiple tool calls, reasoning between each result, until it has enough information to answer (e.g. "check the weather, then email the forecast to the team").
 
 ---
 
 ## 3. Structured Output
 
-**Structured output** constrains the model's response to conform to a specific schema — typically JSON — rather than free text. This is used for two distinct purposes:
+**Structured output** constrains the model's response to conform to a specific schema - typically JSON - rather than free text. This is used for two distinct purposes:
 
-1. **Tool arguments** — the parameters passed into a function call are always structured (JSON) by design.
-2. **Final answers** — forcing the model's *final* response (not just tool calls) into a strict schema, useful for extraction, classification, and data-pipeline tasks.
+1. **Tool arguments** - the parameters passed into a function call are always structured (JSON) by design.
+2. **Final answers** - forcing the model's *final* response (not just tool calls) into a strict schema, useful for extraction, classification, and data-pipeline tasks.
 
 Providers implement this differently:
 
@@ -159,7 +159,7 @@ Minimal example:
 **Provider-specific caveats:**
 - OpenAI's strict mode requires `additionalProperties: false` and every property to be listed in `required` (use nullable types to simulate optionality).
 - Claude supports the full schema but ignores `default`; put defaults in the description or handle them server-side.
-- Gemini supports a constrained subset — deeply nested `oneOf`/`anyOf` may not be fully honored, so flatten where possible.
+- Gemini supports a constrained subset - deeply nested `oneOf`/`anyOf` may not be fully honored, so flatten where possible.
 
 ---
 
@@ -167,9 +167,9 @@ Minimal example:
 
 The model **generating** valid-looking JSON is not the same as your application **trusting** it. Always validate before execution:
 
-1. **Schema validation** — use a JSON Schema validator (`ajv` in JS, `jsonschema`/`pydantic` in Python) on every tool call argument set, even with strict/structured-output modes enabled.
-2. **Semantic validation** — schema-valid does not mean *safe* or *sensible* (e.g. a valid date string that's in the past for a "book a future meeting" tool).
-3. **Reject-and-report** — on validation failure, return a structured error back to the model as the tool result so it can self-correct, rather than crashing your app.
+1. **Schema validation** - use a JSON Schema validator (`ajv` in JS, `jsonschema`/`pydantic` in Python) on every tool call argument set, even with strict/structured-output modes enabled.
+2. **Semantic validation** - schema-valid does not mean *safe* or *sensible* (e.g. a valid date string that's in the past for a "book a future meeting" tool).
+3. **Reject-and-report** - on validation failure, return a structured error back to the model as the tool result so it can self-correct, rather than crashing your app.
 
 ```python
 from jsonschema import validate, ValidationError
@@ -236,7 +236,7 @@ Streaming tool calls lets you show partial progress instead of waiting for the f
 | Claude | `input_json_delta` events inside `content_block_delta`, accumulated per `tool_use` block |
 | Gemini | Streamed candidates; function calls typically arrive as a complete chunk rather than token-by-token JSON deltas |
 
-**Pattern:** buffer argument deltas per call ID, and only attempt to parse/execute once you receive the corresponding "stop"/"done" signal for that block — partial JSON is not valid JSON.
+**Pattern:** buffer argument deltas per call ID, and only attempt to parse/execute once you receive the corresponding "stop"/"done" signal for that block - partial JSON is not valid JSON.
 
 ```javascript
 let buffer = "";
@@ -255,11 +255,11 @@ for await (const event of stream) {
 
 ## 10. Parallel Tool Calling
 
-All three providers support requesting **multiple tool calls in a single model turn** (e.g. "get the weather in London and Tokyo" → two `get_weather` calls at once).
+All three providers support requesting **multiple tool calls in a single model turn** (e.g. "get the weather in London and Tokyo" -> two `get_weather` calls at once).
 
 **Design implications:**
 - Your executor should run independent tool calls **concurrently** (e.g. `Promise.all` / `asyncio.gather`) rather than sequentially.
-- Each result must be matched back to its originating call ID — never assume ordering is preserved.
+- Each result must be matched back to its originating call ID - never assume ordering is preserved.
 - Partial failure handling: if one of three parallel calls fails, return an error result for that specific call ID while still returning successful results for the others; let the model decide how to proceed.
 - Disable parallel calling (`parallel_tool_calls: false` on OpenAI, single `tool_choice` forcing on Claude) when tool calls have side effects that must not happen concurrently (e.g. two calls that both write to the same row).
 
@@ -267,11 +267,11 @@ All three providers support requesting **multiple tool calls in a single model t
 
 ## 11. Security
 
-Tool calling gives a model the ability to trigger real-world side effects — treat every tool as an **attack surface**.
+Tool calling gives a model the ability to trigger real-world side effects - treat every tool as an **attack surface**.
 
 - **Treat model output as untrusted input.** Never string-concatenate model-generated arguments directly into SQL, shell commands, or file paths. Use parameterized queries, allow-lists, and sandboxed execution (see [`sql/`](./sql) and [`filesystem/`](./filesystem)).
 - **Principle of least privilege.** Scope API keys/DB credentials used by each tool to the minimum required permissions (read-only where possible).
-- **Prompt injection awareness.** Content returned *from* a tool (a web page, a file, an email body) can contain instructions aimed at the model. Never treat tool output as trusted instructions — see the `web-search/` and `email/` examples for mitigation patterns.
+- **Prompt injection awareness.** Content returned *from* a tool (a web page, a file, an email body) can contain instructions aimed at the model. Never treat tool output as trusted instructions - see the `web-search/` and `email/` examples for mitigation patterns.
 - **Human-in-the-loop for irreversible actions.** Sending an email, deleting a file, executing a financial transaction, or modifying access controls should require explicit confirmation before execution, not just a valid tool call.
 - **Rate limiting & quotas** per tool, per user, to prevent runaway agentic loops from exhausting downstream APIs or budgets.
 - **Audit logging.** Log every tool call (arguments + result + who/when) for traceability, especially for tools with side effects.
@@ -284,12 +284,12 @@ Tool calling gives a model the ability to trigger real-world side effects — tr
 - **Write descriptions for the model, not for humans.** Be explicit about units, formats, edge cases, and what *not* to pass.
 - **Keep tool surfaces small and composable.** Prefer several narrow, well-named tools over one giant multi-purpose tool with a dozen optional parameters.
 - **Return structured errors, not exceptions.** A tool result of `{"error": "not_found", "message": "..."}` lets the model recover gracefully; a raw stack trace does not.
-- **Version your tool schemas.** Treat tool definitions like an API contract — breaking changes should bump a version and be rolled out carefully, since prompts and few-shot examples elsewhere may depend on the old shape.
+- **Version your tool schemas.** Treat tool definitions like an API contract - breaking changes should bump a version and be rolled out carefully, since prompts and few-shot examples elsewhere may depend on the old shape.
 - **Cap iteration loops.** Agentic tool-calling loops should have a hard max-turns limit to prevent infinite loops burning tokens/cost.
 - **Test with adversarial inputs.** Malformed dates, SQL-injection-shaped strings, extremely long inputs, and ambiguous natural-language requests should all be part of your test suite.
 - **Cache idempotent tool results** where appropriate (e.g. static reference data) to reduce latency and cost.
-- **Monitor tool-selection accuracy** in production — track how often the model picks the wrong tool or supplies invalid arguments, and iterate on descriptions/schemas accordingly.
-- **Prefer structured output for final answers** whenever your downstream system parses the model's response programmatically — don't regex a natural-language reply.
+- **Monitor tool-selection accuracy** in production - track how often the model picks the wrong tool or supplies invalid arguments, and iterate on descriptions/schemas accordingly.
+- **Prefer structured output for final answers** whenever your downstream system parses the model's response programmatically - don't regex a natural-language reply.
 
 ---
 
@@ -305,4 +305,4 @@ Tool calling gives a model the ability to trigger real-world side effects — tr
 
 ## 📄 License
 
-MIT — free to use, adapt, and extend in your own projects.
+MIT - free to use, adapt, and extend in your own projects.
