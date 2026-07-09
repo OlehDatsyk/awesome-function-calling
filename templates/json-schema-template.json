@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "required_string_param": {
+      "type": "string",
+      "description": "Explain the expected format clearly, e.g. 'ISO 8601 date, e.g. 2026-07-09'"
+    },
+    "optional_enum_param": {
+      "type": "string",
+      "enum": ["option_a", "option_b"],
+      "description": "Explain what each option means and what the default behavior is if omitted"
+    },
+    "bounded_number_param": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "description": "Explain the practical range and why it's bounded"
+    },
+    "array_param": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explain what each item represents"
+    }
+  },
+  "required": ["required_string_param"],
+  "additionalProperties": false
+}
