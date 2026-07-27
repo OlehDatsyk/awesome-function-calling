@@ -301,6 +301,10 @@ Tool calling gives a model the ability to trigger real-world side effects - trea
 - Building multi-tool agents? See [`examples/`](./examples) for orchestration patterns.
 - Starting a new tool from scratch? Use [`templates/`](./templates) as your starting point.
 
+### Structured-output evaluation
+
+- [StructEval](https://github.com/TIGER-AI-Lab/StructEval) - TMLR 2025 benchmark and framework for evaluating language models on structured-output generation and cross-format conversion, with syntax, structural, and rendered-output checks across 18 formats.
+
 ---
 
 ## 📄 License
