@@ -10,26 +10,26 @@ This repository contains working examples, JSON Schemas, architecture notes, and
 
 ```
 awesome-function-calling/
-├── README.md                  <- you are here
-├── openai/                    <- OpenAI function calling guide + examples
-├── claude/                    <- Anthropic Claude tool use guide + examples
-├── gemini/                    <- Google Gemini function calling guide + examples
-├── json-output/               <- JSON mode / JSON-only output patterns
-├── structured-output/         <- Schema-constrained structured outputs
-├── tool-calling/              <- General tool-calling architecture & lifecycle
-├── weather/                   <- Weather Tool (full example)
-├── calendar/                  <- Calendar Tool (full example)
-├── email/                     <- Email Tool (full example)
-├── sql/                       <- SQL Tool (full example)
-├── excel/                     <- Excel Tool (full example)
-├── github/                    <- GitHub Tool (full example)
-├── filesystem/                <- Filesystem Tool (full example)
-├── web-search/                <- Search Tool (full example)
-├── pdf/                       <- PDF Tool (full example)
-├── math/                      <- Math Tool (full example)
-├── translation/               <- Translation Tool (full example)
-├── examples/                  <- Multi-tool / orchestration examples
-└── templates/                 <- Reusable schema & handler templates
+├── README.md <- you are here
+├── openai/ <- OpenAI function calling guide + examples
+├── claude/ <- Anthropic Claude tool use guide + examples
+├── gemini/ <- Google Gemini function calling guide + examples
+├── json-output/ <- JSON mode / JSON-only output patterns
+├── structured-output/ <- Schema-constrained structured outputs
+├── tool-calling/ <- General tool-calling architecture & lifecycle
+├── weather/ <- Weather Tool (full example)
+├── calendar/ <- Calendar Tool (full example)
+├── email/ <- Email Tool (full example)
+├── sql/ <- SQL Tool (full example)
+├── excel/ <- Excel Tool (full example)
+├── github/ <- GitHub Tool (full example)
+├── filesystem/ <- Filesystem Tool (full example)
+├── web-search/ <- Search Tool (full example)
+├── pdf/ <- PDF Tool (full example)
+├── math/ <- Math Tool (full example)
+├── translation/ <- Translation Tool (full example)
+├── examples/ <- Multi-tool / orchestration examples
+└── templates/ <- Reusable schema & handler templates
 ```
 
 Every tool folder follows the same 10-section format: **Overview, Architecture, JSON Schema, Tool Definition, Input, Output, Example Request, Example Response, Error Handling, Best Practices.**
