@@ -2,7 +2,7 @@
 
 ## Overview
 
-Structured output is schema-constrained generation: the model's response (tool arguments, or the final answer) is guaranteed — or strongly guided, depending on provider — to conform to a specific JSON Schema you supply.
+Structured output is schema-constrained generation: the model's response (tool arguments, or the final answer) is guaranteed - or strongly guided, depending on provider - to conform to a specific JSON Schema you supply.
 
 ## Architecture
 
@@ -87,12 +87,12 @@ Downstream code consumes typed data safely
 
 ## Error Handling
 
-- Even with `strict: true`, run the response through your JSON Schema validator — treat provider guarantees as strong defaults, not a substitute for your own validation layer.
-- Handle truncation: if `max_tokens` is hit mid-object, the response may be syntactically incomplete even in strict mode — check `finish_reason` / `stop_reason` before parsing.
+- Even with `strict: true`, run the response through your JSON Schema validator - treat provider guarantees as strong defaults, not a substitute for your own validation layer.
+- Handle truncation: if `max_tokens` is hit mid-object, the response may be syntactically incomplete even in strict mode - check `finish_reason` / `stop_reason` before parsing.
 
 ## Best Practices
 
-- Design schemas top-down from what your downstream code needs, not bottom-up from what's "easy" for the model — clarity for consumers matters more than generation convenience.
+- Design schemas top-down from what your downstream code needs, not bottom-up from what's "easy" for the model - clarity for consumers matters more than generation convenience.
 - Keep enums closed and specific (`"status": {"enum": ["pending","paid","overdue"]}`) rather than open strings, wherever the domain allows it.
 - Version schemas alongside your application code; treat them as an API contract.
 - Use structured output for extraction/classification tasks; use tool calling for anything that triggers a real side effect.

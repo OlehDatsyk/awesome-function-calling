@@ -7,16 +7,16 @@ A tool for reading, writing, and listing files within a **sandboxed root directo
 ## Architecture
 
 ```
-User → Model → tool_call: read_file(path)
-             → Executor resolves path against SANDBOX_ROOT
-             → Rejects any resolved path outside SANDBOX_ROOT (path traversal defense)
-             → Returns file contents (size-capped)
+User -> Model -> tool_call: read_file(path)
+             -> Executor resolves path against SANDBOX_ROOT
+             -> Rejects any resolved path outside SANDBOX_ROOT (path traversal defense)
+             -> Returns file contents (size-capped)
 
-User → Model → tool_call: write_file(path, content)   [side-effecting]
-             → Same sandboxing + explicit confirmation for overwrites
+User -> Model -> tool_call: write_file(path, content)   [side-effecting]
+             -> Same sandboxing + explicit confirmation for overwrites
 ```
 
-## JSON Schema — `read_file`
+## JSON Schema - `read_file`
 
 ```json
 {
@@ -105,7 +105,7 @@ def read_file(path, max_bytes=100_000):
 
 ## Best Practices
 
-- **Always resolve paths against a real, canonicalized sandbox root** (`os.path.realpath`) and verify the resolved path is still inside it — string-prefix checks alone (`path.startswith(root)`) are insufficient and bypassable via symlinks.
-- Never expose `write_file` or `delete_file` without a confirmation step for anything outside a scratch/temp directory — see [Security](../README.md#11-security).
+- **Always resolve paths against a real, canonicalized sandbox root** (`os.path.realpath`) and verify the resolved path is still inside it - string-prefix checks alone (`path.startswith(root)`) are insufficient and bypassable via symlinks.
+- Never expose `write_file` or `delete_file` without a confirmation step for anything outside a scratch/temp directory - see [Security](../README.md#11-security).
 - Cap read sizes (`max_bytes`) to avoid flooding the model's context window with huge files; prefer a `list_files` + targeted `read_file` pattern over dumping entire directory trees.
 - Run the executing process itself with OS-level restricted permissions (non-root user, read-only mount where possible) as defense in depth beyond the application-level sandbox.

@@ -7,15 +7,15 @@ A tool for reading and creating calendar events (e.g. against Google Calendar / 
 ## Architecture
 
 ```
-User → Model → tool_call: list_events(start, end)      [read, safe to auto-execute]
-             → tool_call: create_event(...)             [write, side-effecting]
+User -> Model -> tool_call: list_events(start, end)      [read, safe to auto-execute]
+             -> tool_call: create_event(...)             [write, side-effecting]
                     │
                     ▼
        Application requires explicit user confirmation
        before actually creating the event (see Security)
 ```
 
-## JSON Schema — `create_event`
+## JSON Schema - `create_event`
 
 ```json
 {
@@ -122,14 +122,14 @@ async function createEvent({ title, start_time, end_time, attendees = [], locati
 
 | Error | Response |
 |---|---|
-| End time before start time | `{"error": "invalid_time_range"}` — reject before hitting the API |
-| Conflicting event on calendar | `{"error": "conflict", "conflicting_event_id": "..."}` — let model propose alternatives |
+| End time before start time | `{"error": "invalid_time_range"}` - reject before hitting the API |
+| Conflicting event on calendar | `{"error": "conflict", "conflicting_event_id": "..."}` - let model propose alternatives |
 | Attendee email invalid | `{"error": "invalid_attendee", "email": "..."}` |
-| Auth/token expired | `{"error": "auth_required"}` — surface to user, do not retry silently |
+| Auth/token expired | `{"error": "auth_required"}` - surface to user, do not retry silently |
 
 ## Best Practices
 
-- **Split read and write tools.** `list_events` can be auto-executed; `create_event` (and especially `delete_event`) should require explicit user confirmation in your application layer before the real API call fires — see [Security](../README.md#11-security).
+- **Split read and write tools.** `list_events` can be auto-executed; `create_event` (and especially `delete_event`) should require explicit user confirmation in your application layer before the real API call fires - see [Security](../README.md#11-security).
 - Always require explicit timezone offsets in timestamps; never assume a default timezone silently.
 - For `create_event`, consider a two-step "propose then confirm" UX: have the model call a `preview_event` tool first, show the user, then call `create_event` only after confirmation.
 - Validate that `attendees` don't silently exceed platform limits (e.g. Google Calendar caps attendees per event).

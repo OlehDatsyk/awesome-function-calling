@@ -7,9 +7,9 @@ One or two sentences: what does this tool do, and is it read-only or side-effect
 ## Architecture
 
 ```
-User → Model → tool_call: tool_name(args)
-             → Executor does X
-             → Returns Y
+User -> Model -> tool_call: tool_name(args)
+             -> Executor does X
+             -> Returns Y
 ```
 
 ## JSON Schema
@@ -30,7 +30,7 @@ User → Model → tool_call: tool_name(args)
 ```json
 {
   "name": "tool_name",
-  "description": "Clear, specific description written for the model — include units, formats, and constraints.",
+  "description": "Clear, specific description written for the model - include units, formats, and constraints.",
   "input_schema": { "...": "see JSON Schema above" }
 }
 ```

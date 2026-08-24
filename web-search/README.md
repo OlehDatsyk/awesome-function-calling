@@ -7,11 +7,11 @@ A tool that lets the model query a web search engine and retrieve ranked results
 ## Architecture
 
 ```
-User → Model → tool_call: web_search(query, max_results)
-             → Executor calls a search API (Bing, Google CSE, Brave, etc.)
-             → Returns [{title, url, snippet}]
-             → Model may follow up with fetch_page(url) for full content
-             → Model synthesizes an answer, citing sources
+User -> Model -> tool_call: web_search(query, max_results)
+             -> Executor calls a search API (Bing, Google CSE, Brave, etc.)
+             -> Returns [{title, url, snippet}]
+             -> Model may follow up with fetch_page(url) for full content
+             -> Model synthesizes an answer, citing sources
 ```
 
 ## JSON Schema
@@ -91,7 +91,7 @@ def web_search(query, max_results=5, recency="any"):
 
 | Error | Response |
 |---|---|
-| No results found | `{"results": [], "result_count": 0}` — not an error, let the model rephrase |
+| No results found | `{"results": [], "result_count": 0}` - not an error, let the model rephrase |
 | Upstream API error | `{"error": "search_upstream_error", "status": ...}` |
 | Query too long/empty | `{"error": "invalid_query"}` |
 | Rate limited | `{"error": "rate_limited", "retry_after_seconds": ...}` |
@@ -99,7 +99,7 @@ def web_search(query, max_results=5, recency="any"):
 ## Best Practices
 
 - Return **snippets, not full page content**, from the search tool itself; use a separate `fetch_page(url)` tool for deep reads, keeping context usage efficient.
-- Treat all returned snippets/page content as **untrusted data**, not instructions — a page could contain text aimed at manipulating the model (prompt injection via SEO'd content). Never let search results trigger tool calls with side effects without going through normal validation.
+- Treat all returned snippets/page content as **untrusted data**, not instructions - a page could contain text aimed at manipulating the model (prompt injection via SEO'd content). Never let search results trigger tool calls with side effects without going through normal validation.
 - Encourage citation: instruct the model (via system prompt) to attribute claims to specific URLs from the results.
 - Respect `recency` filters server-side rather than relying on the model to filter stale results itself.
 - Cache repeated identical queries briefly to reduce cost and latency for common questions.

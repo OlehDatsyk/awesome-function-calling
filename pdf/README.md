@@ -7,10 +7,10 @@ A tool for extracting text, tables, and metadata from PDF documents, and optiona
 ## Architecture
 
 ```
-User → Model → tool_call: extract_pdf_text(file_id, page_range)
-             → Executor loads the PDF (from an uploaded file store or URL)
-             → Extracts text per page (OCR fallback for scanned pages)
-             → Returns text keyed by page number, capped in size
+User -> Model -> tool_call: extract_pdf_text(file_id, page_range)
+             -> Executor loads the PDF (from an uploaded file store or URL)
+             -> Extracts text per page (OCR fallback for scanned pages)
+             -> Returns text keyed by page number, capped in size
 ```
 
 ## JSON Schema

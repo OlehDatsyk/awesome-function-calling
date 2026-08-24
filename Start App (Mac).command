@@ -5,9 +5,9 @@
 
 cd "$(dirname "$0")"
 
-echo "============================================"
-echo "  awesome-function-calling - Local Viewer"
-echo "============================================"
+echo "====================================================================="
+echo "  awesome-function-calling - Local Viewer (Was made by Oleh Datsyk)"
+echo "====================================================================="
 echo ""
 echo "NOTE: This repository is a documentation project,"
 echo "not a running application. This script starts a"

@@ -12,8 +12,8 @@ Every tool in this repository returns errors in a consistent structured shape ra
 }
 ```
 
-- `error` — a stable, machine-readable snake_case code. Never change this string without a version bump to the tool contract.
-- `message` — a short explanation suitable for the model to relay to the user or reason about.
+- `error` - a stable, machine-readable snake_case code. Never change this string without a version bump to the tool contract.
+- `message` - a short explanation suitable for the model to relay to the user or reason about.
 - Additional fields as needed per error type (e.g. `retry_after_seconds` for rate limits, `field` for validation errors).
 
 ## Validation vs. Execution Errors
@@ -53,6 +53,6 @@ def tool_handler(schema):
 
 ## Best Practices
 
-- Never let an unhandled exception propagate out of a tool executor and crash the whole agent loop — always catch and convert to a structured error result.
-- Always return a result for *every* tool call the model made in a turn, even on failure — a missing result for a `tool_use_id`/`call_id` will break the conversation state on most providers.
+- Never let an unhandled exception propagate out of a tool executor and crash the whole agent loop - always catch and convert to a structured error result.
+- Always return a result for *every* tool call the model made in a turn, even on failure - a missing result for a `tool_use_id`/`call_id` will break the conversation state on most providers.
 - Keep error codes stable across versions; add new codes rather than repurposing old ones.

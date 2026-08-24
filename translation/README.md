@@ -7,9 +7,9 @@ A tool that delegates text translation to a dedicated machine-translation servic
 ## Architecture
 
 ```
-User → Model → tool_call: translate(text, target_language, source_language)
-             → Executor calls a translation API (e.g. DeepL, Google Translate)
-             → Returns translated text + detected source language + confidence
+User -> Model -> tool_call: translate(text, target_language, source_language)
+             -> Executor calls a translation API (e.g. DeepL, Google Translate)
+             -> Returns translated text + detected source language + confidence
 ```
 
 ## JSON Schema
@@ -107,7 +107,7 @@ def translate(text, target_language, source_language=None, formality="default"):
 
 ## Best Practices
 
-- Use ISO 639-1 language codes consistently in both input and output to avoid ambiguity (e.g. `"pt"` vs `"pt-BR"` — decide and document a convention).
+- Use ISO 639-1 language codes consistently in both input and output to avoid ambiguity (e.g. `"pt"` vs `"pt-BR"` - decide and document a convention).
 - For long documents, chunk text server-side (respecting sentence boundaries) rather than relying on the model to split it, then reassemble in order.
 - Preserve placeholders/variables (e.g. `{{user_name}}`) untranslated by using the translation API's glossary/no-translate features where available.
 - Cache translations of frequently repeated strings (e.g. UI labels) to reduce cost and ensure consistency across calls.

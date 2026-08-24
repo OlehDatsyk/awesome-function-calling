@@ -7,15 +7,15 @@ A tool for reading, writing, and computing over spreadsheet data (e.g. via `open
 ## Architecture
 
 ```
-User → Model → tool_call: read_range(sheet, range)
-             → Executor opens workbook, reads cell values/formulas
-             → Returns 2D array of values
+User -> Model -> tool_call: read_range(sheet, range)
+             -> Executor opens workbook, reads cell values/formulas
+             -> Returns 2D array of values
 
-User → Model → tool_call: write_range(sheet, range, values)
-             → Executor validates bounds, writes cells, saves workbook
+User -> Model -> tool_call: write_range(sheet, range, values)
+             -> Executor validates bounds, writes cells, saves workbook
 ```
 
-## JSON Schema — `write_range`
+## JSON Schema - `write_range`
 
 ```json
 {
@@ -118,7 +118,7 @@ def write_range(workbook_path, sheet_name, range_str, values):
 
 ## Best Practices
 
-- Validate range dimensions against the supplied `values` array **before** writing any cell — partial writes on error leave the workbook in an inconsistent state.
+- Validate range dimensions against the supplied `values` array **before** writing any cell - partial writes on error leave the workbook in an inconsistent state.
 - For formula cells, decide explicitly whether the tool should read the formula string or the computed value (`data_only=True` in openpyxl) and document this clearly in the tool description.
 - Keep a versioned backup or use a transactional save pattern for write operations on shared workbooks.
 - For cloud-hosted Excel (Microsoft Graph), prefer the native range-patch API over reconstructing the whole sheet, for both performance and to avoid clobbering concurrent edits.

@@ -2,20 +2,20 @@
 
 ## Overview
 
-A tool for reading and sending email (e.g. via Gmail API / Microsoft Graph / SMTP). Sending email is an **irreversible, side-effecting action** and must always require explicit user confirmation — see Security notes below.
+A tool for reading and sending email (e.g. via Gmail API / Microsoft Graph / SMTP). Sending email is an **irreversible, side-effecting action** and must always require explicit user confirmation - see Security notes below.
 
 ## Architecture
 
 ```
-User → Model → tool_call: search_inbox(query)        [read]
-             → tool_call: draft_email(to, subject, body)  [safe: creates a draft, no send]
-             → [explicit user confirmation in UI]
-             → tool_call: send_email(draft_id)        [side-effecting, irreversible]
+User -> Model -> tool_call: search_inbox(query)        [read]
+             -> tool_call: draft_email(to, subject, body)  [safe: creates a draft, no send]
+             -> [explicit user confirmation in UI]
+             -> tool_call: send_email(draft_id)        [side-effecting, irreversible]
 ```
 
 Splitting `draft_email` from `send_email` gives you a natural human-in-the-loop checkpoint.
 
-## JSON Schema — `send_email`
+## JSON Schema - `send_email`
 
 ```json
 {
@@ -37,7 +37,7 @@ Splitting `draft_email` from `send_email` gives you a natural human-in-the-loop 
 ```json
 {
   "name": "send_email",
-  "description": "Send an email. This action is irreversible and will be delivered immediately — only call after the user has explicitly confirmed the content.",
+  "description": "Send an email. This action is irreversible and will be delivered immediately - only call after the user has explicitly confirmed the content.",
   "input_schema": { "...": "see above" }
 }
 ```
@@ -124,7 +124,7 @@ def send_email(to, subject, body, cc=None, draft_id=None):
 
 ## Best Practices
 
-- **Never call `send_email` directly from a model decision alone.** Require an explicit UI confirmation step between draft and send (see [Security](../README.md#11-security) — "Human-in-the-loop for irreversible actions").
-- Treat email *body content read by other tools* (e.g. `search_inbox` results) as untrusted — a malicious email could contain prompt-injection text aimed at the model. Never let inbound email content trigger a `send_email` call without confirmation.
+- **Never call `send_email` directly from a model decision alone.** Require an explicit UI confirmation step between draft and send (see [Security](../README.md#11-security) - "Human-in-the-loop for irreversible actions").
+- Treat email *body content read by other tools* (e.g. `search_inbox` results) as untrusted - a malicious email could contain prompt-injection text aimed at the model. Never let inbound email content trigger a `send_email` call without confirmation.
 - Cap recipient counts and rate-limit sends per user/session to prevent spam-like abuse of the tool.
 - Log every send (to, subject, timestamp, initiating user) for audit purposes.

@@ -7,10 +7,10 @@ A read-only tool that retrieves current weather conditions or a short forecast f
 ## Architecture
 
 ```
-User → Model → tool_call: get_weather(location, units)
-             → Executor calls a weather API (e.g. Open-Meteo, OpenWeatherMap)
-             → Executor returns { temperature, condition, humidity }
-             → Model produces natural-language answer
+User -> Model -> tool_call: get_weather(location, units)
+             -> Executor calls a weather API (e.g. Open-Meteo, OpenWeatherMap)
+             -> Executor returns { temperature, condition, humidity }
+             -> Model produces natural-language answer
 ```
 
 Because this tool is read-only and idempotent, it is safe to retry, cache, and call in parallel for multiple locations.
@@ -127,15 +127,15 @@ def get_weather(location: str, units: str = "metric", forecast_days: int = 0) ->
 
 | Error | Response |
 |---|---|
-| Location not found / ambiguous | `{"error": "location_not_found", "message": "..."}` — model should ask user to clarify |
+| Location not found / ambiguous | `{"error": "location_not_found", "message": "..."}` - model should ask user to clarify |
 | Upstream API timeout | `{"error": "upstream_timeout", "message": "Weather service unavailable, try again shortly"}` |
 | Rate limited | `{"error": "rate_limited", "retry_after_seconds": 30}` |
 
-Always return a structured error object rather than raising — let the model decide whether to retry, ask for clarification, or apologize to the user.
+Always return a structured error object rather than raising - let the model decide whether to retry, ask for clarification, or apologize to the user.
 
 ## Best Practices
 
 - Reject coordinate-style input in the schema description to keep geocoding logic in one place.
-- Cache geocoding lookups (city → lat/lon) aggressively; weather data itself should have a short TTL (5–15 min).
+- Cache geocoding lookups (city -> lat/lon) aggressively; weather data itself should have a short TTL (5-15 min).
 - Keep `forecast_days` bounded (`maximum: 7`) to prevent unbounded response sizes.
-- This tool is a great candidate for **parallel tool calling** — e.g. "compare the weather in Paris and Rome" triggers two concurrent calls.
+- This tool is a great candidate for **parallel tool calling** - e.g. "compare the weather in Paris and Rome" triggers two concurrent calls.

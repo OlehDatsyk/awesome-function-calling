@@ -1,4 +1,4 @@
-# OpenAI — Function Calling & the Responses API
+# OpenAI - Function Calling & the Responses API
 
 ## Overview
 
@@ -119,11 +119,11 @@ Enabled by default; multiple `function_call` items may appear in one `output` ar
 
 ## Error Handling
 
-- If arguments fail JSON Schema validation on your end (defense-in-depth even with `strict: true`), return a `function_call_output` with an error payload rather than throwing — this lets the model self-correct.
+- If arguments fail JSON Schema validation on your end (defense-in-depth even with `strict: true`), return a `function_call_output` with an error payload rather than throwing - this lets the model self-correct.
 - Handle `incomplete` / `max_output_tokens` truncation on the `output` array before assuming a `function_call` is complete.
 
 ## Best Practices
 
-- Prefer `strict: true` for all tool and structured-output schemas — it eliminates most malformed-argument failures.
+- Prefer `strict: true` for all tool and structured-output schemas - it eliminates most malformed-argument failures.
 - Keep `parameters` schemas flat where possible; strict mode requires `additionalProperties: false` and all properties in `required` (use `["string", "null"]` unions to simulate optional fields).
 - Use `previous_response_id` to keep multi-turn tool loops stateless on your side.

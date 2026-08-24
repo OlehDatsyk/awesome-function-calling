@@ -2,22 +2,22 @@
 
 ## Overview
 
-A tool that lets a model query a relational database. This is one of the highest-risk tools in this repository — untrusted, model-generated SQL running against production data is a direct SQL-injection and data-exfiltration vector. This example uses an **allow-listed, parameterized query pattern** rather than free-form SQL execution.
+A tool that lets a model query a relational database. This is one of the highest-risk tools in this repository - untrusted, model-generated SQL running against production data is a direct SQL-injection and data-exfiltration vector. This example uses an **allow-listed, parameterized query pattern** rather than free-form SQL execution.
 
 ## Architecture
 
 ```
-User → Model → tool_call: run_query(table, filters, columns, limit)
-             → Executor builds a PARAMETERIZED query from an allow-list
+User -> Model -> tool_call: run_query(table, filters, columns, limit)
+             -> Executor builds a PARAMETERIZED query from an allow-list
                (never string-concatenates model output into SQL)
-             → Read-only DB role (no INSERT/UPDATE/DELETE/DDL grants)
-             → Rows returned, capped at max_rows
+             -> Read-only DB role (no INSERT/UPDATE/DELETE/DDL grants)
+             -> Rows returned, capped at max_rows
 ```
 
 Two design options, in increasing order of risk:
 
-1. **Structured filter tool** (recommended) — the model supplies table/column/operator/value, and your code builds the SQL. No raw SQL ever comes from the model. *(shown below)*
-2. **Free-form read-only SQL tool** — the model writes full `SELECT` statements, validated by a SQL parser/allow-list before execution against a read-only replica. Higher flexibility, higher risk — only use with a dedicated SQL sandbox and strict statement-type allow-listing (`SELECT` only, no subqueries into system tables).
+1. **Structured filter tool** (recommended) - the model supplies table/column/operator/value, and your code builds the SQL. No raw SQL ever comes from the model. *(shown below)*
+2. **Free-form read-only SQL tool** - the model writes full `SELECT` statements, validated by a SQL parser/allow-list before execution against a read-only replica. Higher flexibility, higher risk - only use with a dedicated SQL sandbox and strict statement-type allow-listing (`SELECT` only, no subqueries into system tables).
 
 ## JSON Schema
 
@@ -89,7 +89,7 @@ Two design options, in increasing order of risk:
 }
 ```
 
-## Reference Implementation (Python, parameterized — allow-listed columns only)
+## Reference Implementation (Python, parameterized - allow-listed columns only)
 
 ```python
 ALLOWED_TABLES = {

@@ -7,15 +7,15 @@ A tool for interacting with GitHub repositories: searching code/issues, reading 
 ## Architecture
 
 ```
-User → Model → tool_call: search_issues(repo, query, state)   [read, safe]
-             → Model → tool_call: create_issue(repo, title, body, labels)   [write]
+User -> Model -> tool_call: search_issues(repo, query, state)   [read, safe]
+             -> Model -> tool_call: create_issue(repo, title, body, labels)   [write]
                     │
                     ▼
        Scoped GitHub App / PAT with minimum required permissions
-       (issues: write, contents: read — no admin, no delete)
+       (issues: write, contents: read - no admin, no delete)
 ```
 
-## JSON Schema — `create_issue`
+## JSON Schema - `create_issue`
 
 ```json
 {
@@ -114,6 +114,6 @@ async function createIssue({ repo, title, body, labels = [], assignees = [] }) {
 ## Best Practices
 
 - Scope the GitHub App/token to only the repos and permissions the tool actually needs (issues + contents read, not full `repo` admin scope).
-- Always search before creating to avoid duplicate issues — encourage this in the tool description or enforce it in your orchestration logic.
-- Treat repository content read via tools (README, issue bodies) as untrusted text — a malicious issue body could contain prompt-injection instructions; never let tool-read content silently trigger a write action (e.g. `create_issue`, `merge_pr`) without confirmation.
+- Always search before creating to avoid duplicate issues - encourage this in the tool description or enforce it in your orchestration logic.
+- Treat repository content read via tools (README, issue bodies) as untrusted text - a malicious issue body could contain prompt-injection instructions; never let tool-read content silently trigger a write action (e.g. `create_issue`, `merge_pr`) without confirmation.
 - For PR-creation tools, require explicit user confirmation before pushing branches or opening PRs, per the [Security](../README.md#11-security) guidance on irreversible/side-effecting actions.

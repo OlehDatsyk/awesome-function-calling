@@ -7,10 +7,10 @@ A tool that offloads precise numerical computation to a real evaluator instead o
 ## Architecture
 
 ```
-User → Model → tool_call: calculate(expression)
-             → Executor parses the expression with a safe math grammar
-               (no arbitrary code execution — see Security notes)
-             → Returns the computed result with the requested precision
+User -> Model -> tool_call: calculate(expression)
+             -> Executor parses the expression with a safe math grammar
+               (no arbitrary code execution - see Security notes)
+             -> Returns the computed result with the requested precision
 ```
 
 ## JSON Schema
@@ -61,7 +61,7 @@ User → Model → tool_call: calculate(expression)
 }
 ```
 
-## Reference Implementation (Python, `asteval` — sandboxed, no arbitrary exec)
+## Reference Implementation (Python, `asteval` - sandboxed, no arbitrary exec)
 
 ```python
 from asteval import Interpreter

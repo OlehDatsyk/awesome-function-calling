@@ -1,4 +1,4 @@
-# Claude — Tool Use (Anthropic Messages API)
+# Claude - Tool Use (Anthropic Messages API)
 
 ## Overview
 
@@ -95,7 +95,7 @@ const followUp = await fetch("https://api.anthropic.com/v1/messages", {
 
 ## Structured Output via Forced Tool Use
 
-Claude has no dedicated "JSON mode" — the idiomatic pattern is to define a single schema-only tool and force it with `tool_choice`:
+Claude has no dedicated "JSON mode" - the idiomatic pattern is to define a single schema-only tool and force it with `tool_choice`:
 
 ```json
 {
@@ -126,11 +126,11 @@ Claude may emit multiple `tool_use` blocks in a single response. Execute indepen
 
 ## Error Handling
 
-- If your function execution fails, return a `tool_result` with `"is_error": true` and a short message — Claude will incorporate this and can retry or ask the user for clarification.
+- If your function execution fails, return a `tool_result` with `"is_error": true` and a short message - Claude will incorporate this and can retry or ask the user for clarification.
 - Malformed/missing arguments (rare with well-written schemas) should be validated before execution and treated the same way.
 
 ## Best Practices
 
-- Write tool `description`s as if documenting an API for a new engineer — include units, formats, and what to do with ambiguous input.
+- Write tool `description`s as if documenting an API for a new engineer - include units, formats, and what to do with ambiguous input.
 - Use forced `tool_choice` for tasks that are purely extraction/structuring, to guarantee a tool call happens.
 - For agentic loops, cap the number of tool-use round trips and surface a fallback message if the limit is hit.
